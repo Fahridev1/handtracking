@@ -1,0 +1,50 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.handtracking.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.handtracking.app"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // --- TAMBAHKAN BAGIAN INI ---
+    signingConfigs {
+        release {
+            storeFile file("handtracker.jks") // File jks ada di folder app/
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release // Panggil config release di atas
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    // ----------------------------
+
+    compileOptions { 
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17 
+    }
+}
+
+dependencies {
+    // Pastikan library bawaan kamu tetap ada di sini
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+
+    // Scroll Tangan: kamera di foreground service (CameraX) tanpa Activity
+    implementation 'androidx.camera:camera-core:1.3.4'
+    implementation 'androidx.camera:camera-camera2:1.3.4'
+    implementation 'androidx.camera:camera-lifecycle:1.3.4'
+    implementation 'androidx.lifecycle:lifecycle-service:2.7.0'
+}
